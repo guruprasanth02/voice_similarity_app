@@ -1,0 +1,7 @@
+flask
+resemblyzer
+numpy
+scipy
+torch
+librosa
+matplotlib

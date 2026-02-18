@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Similarity Checker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="fas fa-microphone-alt me-2"></i>VoiceSim AI
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#upload">Checker</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Upload Section -->
+  <section id="upload" class="py-5 bg-light" style="padding-top: 100px;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="upload-card p-5 shadow-lg">
+            <div class="text-center mb-4">
+              <h3 class="fw-bold text-primary">Voice Similarity Checker</h3>
+              <p class="text-muted">Upload audio files to compare voice similarities</p>
+            </div>
+
+            {% if error %}
+              <div class="alert alert-danger animate-shake">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data" class="upload-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="upload-zone" id="source-zone">
+                    <i class="fas fa-microphone fa-2x text-primary mb-2"></i>
+                    <label for="source" class="form-label fw-bold">Source Voice</label>
+                    <input class="form-control" type="file" name="source" id="source" required accept="audio/*">
+                    <small class="text-muted">Upload the reference voice file</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="upload-zone" id="target-zone">
+                    <i class="fas fa-users fa-2x text-success mb-2"></i>
+                    <label for="targets" class="form-label fw-bold">Target Voices</label>
+                    <input class="form-control" type="file" name="targets" id="targets" multiple required accept="audio/*">
+                    <small class="text-muted">Upload multiple voices to compare</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg px-5">
+                  <i class="fas fa-search me-2"></i>Analyze Voices
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  {% if results %}
+  <section class="py-5 bg-gradient-secondary">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h3 class="fw-bold text-white">Analysis Results</h3>
+        <p class="text-light">Voice similarity comparison completed</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="results-card p-4 shadow-lg">
+            <h4 class="mb-4 text-primary">
+              <i class="fas fa-chart-bar me-2"></i>Similarity Scores
+            </h4>
+
+            <div class="results-list">
+              {% for file, score in results %}
+              <div class="result-item animate-slide-in">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="voice-info">
+                    <i class="fas fa-file-audio text-primary me-2"></i>
+                    <span class="fw-bold">{{ file }}</span>
+                    {% if file == source_filename %}
+                      <span class="badge bg-primary ms-2">Source</span>
+                    {% endif %}
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <audio controls class="me-3 audio-player">
+                      <source src="{{ url_for('uploaded_file', filename=file) }}" type="audio/mpeg">
+                    </audio>
+                    {% if score is number %}
+                    <div class="score-badge">
+                      <span class="score-value">{{ "%.2f"|format(score) }}%</span>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ score }}%;"></div>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger mb-0 py-1 px-2" style="max-width: 300px;">
+                      <small><i class="fas fa-exclamation-circle me-1"></i>{{ score }}</small>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+            {% if most_similar %}
+            <div class="most-similar-alert animate-pulse">
+              <i class="fas fa-trophy text-warning me-2"></i>
+              <strong>Most Similar Voice:</strong> {{ most_similar[0] }} ({{ "%.2f"|format(most_similar[1]) }}% match)
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // File input feedback
+    document.getElementById('source').addEventListener('change', function() {
+      const zone = document.getElementById('source-zone');
+      zone.classList.add('file-selected');
+    });
+
+    document.getElementById('targets').addEventListener('change', function() {
+      const zone = document.getElementById('target-zone');
+      zone.classList.add('file-selected');
+    });
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    });
+
+    document.querySelectorAll('.animate-slide-in').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

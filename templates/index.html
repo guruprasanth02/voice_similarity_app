@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Similarity Checker - Advanced AI Voice Analysis</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#home">
+        <i class="fas fa-microphone-alt me-2"></i>VoiceSim AI
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="row align-items-center min-vh-100">
+        <div class="col-lg-6">
+          <h1 class="display-4 fw-bold text-white mb-4 animate-slide-in-left">
+            Advanced Voice Similarity Analysis
+          </h1>
+          <p class="lead text-light mb-4 animate-slide-in-left delay-1">
+            Harness the power of AI to compare voice samples with unprecedented accuracy.
+            Perfect for forensics, authentication, and voice research.
+          </p>
+          <a href="/checker" class="btn btn-light btn-lg animate-bounce delay-2">
+            <i class="fas fa-upload me-2"></i>Get Started
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-image animate-float">
+            <i class="fas fa-wave-square display-1 text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">Powerful Features</h2>
+        <p class="text-muted">Cutting-edge technology for voice analysis</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card text-center p-4 h-100">
+            <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+            <h5>AI-Powered Analysis</h5>
+            <p>Advanced machine learning algorithms for accurate voice similarity detection</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card text-center p-4 h-100">
+            <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+            <h5>Secure Processing</h5>
+            <p>All voice data is processed locally with privacy-first approach</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card text-center p-4 h-100">
+            <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+            <h5>Detailed Results</h5>
+            <p>Get comprehensive similarity scores with visual feedback</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">How It Works</h2>
+        <p class="text-muted">Simple 3-step process</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="step-card text-center">
+            <div class="step-number">1</div>
+            <i class="fas fa-upload fa-2x text-primary mb-3"></i>
+            <h5>Upload Voices</h5>
+            <p>Select your source voice and target voices for comparison</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card text-center">
+            <div class="step-number">2</div>
+            <i class="fas fa-cogs fa-2x text-primary mb-3"></i>
+            <h5>AI Processing</h5>
+            <p>Our advanced AI analyzes voice embeddings and similarity</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card text-center">
+            <div class="step-number">3</div>
+            <i class="fas fa-chart-bar fa-2x text-primary mb-3"></i>
+            <h5>Get Results</h5>
+            <p>View detailed similarity scores and identify matches</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>VoiceSim AI</h5>
+          <p>Advanced voice analysis powered by AI</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p>&copy; 2024 Voice Similarity Checker. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // File input feedback
+    document.getElementById('source').addEventListener('change', function() {
+      const zone = document.getElementById('source-zone');
+      zone.classList.add('file-selected');
+    });
+
+    document.getElementById('targets').addEventListener('change', function() {
+      const zone = document.getElementById('target-zone');
+      zone.classList.add('file-selected');
+    });
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    });
+
+    document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-bounce').forEach(el => {
+      observer.observe(el);
+    });
+
+
+  </script>
+</body>
+</html>
